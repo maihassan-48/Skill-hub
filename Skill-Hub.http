@@ -1,0 +1,6 @@
+@Skill_Hub_HostAddress = http://localhost:5105
+
+GET {{Skill_Hub_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
