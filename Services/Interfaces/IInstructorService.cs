@@ -1,10 +1,11 @@
 ﻿using Skill_Hub.Models;
+using SkillHub.DTOs;
 
 namespace Skill_Hub.Services.Interfaces
 {
     public interface IInstructorService
     {
-        Task<Instructor?> GetInstructorByIdAsync(int id);
-        Task<IEnumerable<Instructor>> GetAllInstructorsAsync();
+        Task<InstructorResponseDTO?> GetInstructorByIdAsync(int id);
+        Task<IEnumerable<InstructorResponseDTO>> GetAllInstructorsAsync();
     }
 }

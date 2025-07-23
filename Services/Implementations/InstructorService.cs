@@ -1,26 +1,32 @@
-﻿using Skill_Hub.Models;
-using Skill_Hub.Services.Interfaces;
+﻿using AutoMapper;
 using Skill_Hub.Configurations;
+using Skill_Hub.Models;
+using Skill_Hub.Services.Interfaces;
+using SkillHub.DTOs;
 
 namespace Skill_Hub.Services.Implementations
 {
     public class InstructorService : IInstructorService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public InstructorService(IUnitOfWork unitOfWork)
+        public InstructorService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Instructor>> GetAllInstructorsAsync()
+        public async Task<IEnumerable<InstructorResponseDTO>> GetAllInstructorsAsync()
         {
-            return await _unitOfWork.instructorRepository.GetAllInstructorsAsync();
+            var instructors =  await _unitOfWork.instructorRepository.GetAllInstructorsAsync();
+            return _mapper.Map<IEnumerable<InstructorResponseDTO>>(instructors);
         }
 
-        public async Task<Instructor?> GetInstructorByIdAsync(int id)
+        public async Task<InstructorResponseDTO?> GetInstructorByIdAsync(int id)
         {
-            return await _unitOfWork.instructorRepository.GetInstructorByIdAsync(id);
+            var instructor =  await _unitOfWork.instructorRepository.GetInstructorByIdAsync(id);
+            return _mapper.Map<InstructorResponseDTO?>(instructor);
         }
     }
 }
