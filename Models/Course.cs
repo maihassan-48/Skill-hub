@@ -12,14 +12,11 @@ namespace Skill_Hub.Models
         [MaxLength(1000)]
         public string Description { get; set; } = null!;
 
-        public int CategoryId { get; set; }
         public Category Category { get; set; } = null!;
 
-        public int InstructorId { get; set; }
         public Instructor Instructor { get; set; } = null!;
 
-        public virtual ICollection<Module> Modules { get; set; } = new List<Module>();
-        public virtual ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+        public virtual List<Student> Students { get; } = [];
     }
 
 }

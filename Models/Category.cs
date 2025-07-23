@@ -12,6 +12,5 @@ namespace Skill_Hub.Models
 
         [MaxLength(500)]
         public string? Description { get; set; }
-        public virtual ICollection<Course> Courses { get; set; } = new List<Course>();
     }
 }
