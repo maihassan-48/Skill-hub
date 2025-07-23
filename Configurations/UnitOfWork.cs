@@ -8,7 +8,7 @@ namespace Skill_Hub.Configurations
     {
         private Context _context;
         private IInstructorRepository _instructorRepository;
-
+        private IUserRepository _userRepository;
         public UnitOfWork(Context context)
         {
             _context = context;
@@ -19,6 +19,14 @@ namespace Skill_Hub.Configurations
             get
             {
                 return _instructorRepository = _instructorRepository ?? new InstructorRepository(_context);
+            }
+        }
+
+        public IUserRepository userRepository
+        {
+            get
+            {
+                return _userRepository = _userRepository ?? new UserRepository(_context);
             }
         }
 
