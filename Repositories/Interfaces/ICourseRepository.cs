@@ -10,5 +10,7 @@ namespace Skill_Hub.Repositories.Interfaces
         Task AddCourseAsync(Course course);
         Task UpdateCourseAsync(Course course);
         Task DeleteCourseAsync(int courseId);
+
+        Task<IEnumerable<Course>> GetCoursesByInstructorAsync(int instructorId); 
     }
 }
