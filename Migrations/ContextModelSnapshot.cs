@@ -22,6 +22,20 @@ namespace Skill_Hub.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Skill_Hub.Models.Admin", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Permissions")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Admins");
+                });
+
             modelBuilder.Entity("Skill_Hub.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -41,7 +55,7 @@ namespace Skill_Hub.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categorys");
                 });
 
             modelBuilder.Entity("Skill_Hub.Models.Course", b =>
@@ -109,6 +123,20 @@ namespace Skill_Hub.Migrations
                     b.ToTable("Enrollments");
                 });
 
+            modelBuilder.Entity("Skill_Hub.Models.Instructor", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Department")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Instructors");
+                });
+
             modelBuilder.Entity("Skill_Hub.Models.Module", b =>
                 {
                     b.Property<int>("Id")
@@ -164,6 +192,23 @@ namespace Skill_Hub.Migrations
                     b.ToTable("Skills");
                 });
 
+            modelBuilder.Entity("Skill_Hub.Models.Student", b =>
+                {
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Major")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("StudentId");
+
+                    b.ToTable("Students");
+                });
+
             modelBuilder.Entity("Skill_Hub.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -172,12 +217,15 @@ namespace Skill_Hub.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Discriminator")
+                    b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -187,10 +235,6 @@ namespace Skill_Hub.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasDiscriminator().HasValue("User");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Skill_Hub.Models.UserSkill", b =>
@@ -201,13 +245,13 @@ namespace Skill_Hub.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
                     b.Property<int>("SkillId")
                         .HasColumnType("int");
 
                     b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("level")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -216,60 +260,30 @@ namespace Skill_Hub.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("UserSkill");
+                    b.ToTable("UserSkills");
                 });
 
             modelBuilder.Entity("Skill_Hub.Models.Admin", b =>
                 {
-                    b.HasBaseType("Skill_Hub.Models.User");
+                    b.HasOne("Skill_Hub.Models.User", "User")
+                        .WithOne("Admin")
+                        .HasForeignKey("Skill_Hub.Models.Admin", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<string>("Permissions")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasDiscriminator().HasValue("Admin");
-                });
-
-            modelBuilder.Entity("Skill_Hub.Models.Instructor", b =>
-                {
-                    b.HasBaseType("Skill_Hub.Models.User");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.ToTable("Users", t =>
-                        {
-                            t.Property("Email")
-                                .HasColumnName("Instructor_Email");
-                        });
-
-                    b.HasDiscriminator().HasValue("Instructor");
-                });
-
-            modelBuilder.Entity("Skill_Hub.Models.Student", b =>
-                {
-                    b.HasBaseType("Skill_Hub.Models.User");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasDiscriminator().HasValue("Student");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Skill_Hub.Models.Course", b =>
                 {
                     b.HasOne("Skill_Hub.Models.Category", "Category")
-                        .WithMany("Courses")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Skill_Hub.Models.Instructor", "Instructor")
-                        .WithMany("CoursesCreated")
+                        .WithMany()
                         .HasForeignKey("InstructorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -281,27 +295,34 @@ namespace Skill_Hub.Migrations
 
             modelBuilder.Entity("Skill_Hub.Models.Enrollment", b =>
                 {
-                    b.HasOne("Skill_Hub.Models.Course", "Course")
-                        .WithMany("Enrollments")
+                    b.HasOne("Skill_Hub.Models.Course", null)
+                        .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Skill_Hub.Models.Student", "Student")
-                        .WithMany("Enrollments")
+                    b.HasOne("Skill_Hub.Models.Student", null)
+                        .WithMany()
                         .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Skill_Hub.Models.Instructor", b =>
+                {
+                    b.HasOne("Skill_Hub.Models.User", "User")
+                        .WithOne("Instructor")
+                        .HasForeignKey("Skill_Hub.Models.Instructor", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Course");
-
-                    b.Navigation("Student");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Skill_Hub.Models.Module", b =>
                 {
                     b.HasOne("Skill_Hub.Models.Course", "Course")
-                        .WithMany("Modules")
+                        .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -309,10 +330,21 @@ namespace Skill_Hub.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("Skill_Hub.Models.Student", b =>
+                {
+                    b.HasOne("Skill_Hub.Models.User", "User")
+                        .WithOne("Student")
+                        .HasForeignKey("Skill_Hub.Models.Student", "StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Skill_Hub.Models.UserSkill", b =>
                 {
                     b.HasOne("Skill_Hub.Models.Skill", "Skill")
-                        .WithMany("UserSkills")
+                        .WithMany()
                         .HasForeignKey("SkillId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -328,31 +360,16 @@ namespace Skill_Hub.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("Skill_Hub.Models.Category", b =>
+            modelBuilder.Entity("Skill_Hub.Models.User", b =>
                 {
-                    b.Navigation("Courses");
-                });
+                    b.Navigation("Admin")
+                        .IsRequired();
 
-            modelBuilder.Entity("Skill_Hub.Models.Course", b =>
-                {
-                    b.Navigation("Enrollments");
+                    b.Navigation("Instructor")
+                        .IsRequired();
 
-                    b.Navigation("Modules");
-                });
-
-            modelBuilder.Entity("Skill_Hub.Models.Skill", b =>
-                {
-                    b.Navigation("UserSkills");
-                });
-
-            modelBuilder.Entity("Skill_Hub.Models.Instructor", b =>
-                {
-                    b.Navigation("CoursesCreated");
-                });
-
-            modelBuilder.Entity("Skill_Hub.Models.Student", b =>
-                {
-                    b.Navigation("Enrollments");
+                    b.Navigation("Student")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

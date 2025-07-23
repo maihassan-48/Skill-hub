@@ -2,12 +2,14 @@
 
 namespace Skill_Hub.Models
 {
-    public class Student : User
+    public class Student
     {
-        [Required]
-        [MaxLength(100)]
-        public string Email { get; set; } = null!;
+        public int StudentId { get; set; }
+        public User User { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string Major { get; set; }
+        public virtual List<Course> Courses { get; } = [];
+        public virtual List<Skill> Skills { get; } = [];
 
-        public virtual ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
     }
 }

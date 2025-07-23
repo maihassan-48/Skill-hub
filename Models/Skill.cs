@@ -13,6 +13,5 @@ public class Skill
     [MaxLength(500)]
     public string? Description { get; set; }
 
-
-    public virtual ICollection<UserSkill> UserSkills { get; set; } = new List<UserSkill>();
+    public virtual List<Student> Students { get; } = [];
 }
