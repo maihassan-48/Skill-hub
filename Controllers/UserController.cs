@@ -60,7 +60,6 @@ namespace Skill_Hub.Controllers
             return Ok(user);
         }
 
-        [Authorize(Roles = INSTRUCTOR_ADMIN_ROLES)]
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] UserRequestDTO userRequest)
         {
