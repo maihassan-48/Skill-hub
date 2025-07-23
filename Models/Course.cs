@@ -5,6 +5,7 @@ namespace Skill_Hub.Models
 {
     public class Course
     {
+        public int Id { get; set; }
         [Required, MaxLength(100)]
         public string Name { get; set; } = null!;
 
@@ -14,7 +15,7 @@ namespace Skill_Hub.Models
         public int CategoryId { get; set; }
         public Category Category { get; set; } = null!;
 
-        public int InstructorId { get; set; }
+        public int UserId { get; set; }
         public User Instructor { get; set; } = null!;
 
         public virtual ICollection<Module> Modules { get; set; } = new List<Module>();

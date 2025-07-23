@@ -6,9 +6,9 @@
     }
   },
   "AllowedHosts": "*",
-  "ConnectionStrings": {
-    "DefaultConnection": ""
-  },
+    "ConnectionStrings": {
+        "DefaultConnection": "Server=localhost;Database=SkillHubDb;Trusted_Connection=True;"
+    },
   "Jwt": {
     "Key": "",
     "DurationInMinutes": 60

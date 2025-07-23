@@ -12,7 +12,7 @@
         public int UserId { get; set; }
         public int CourseId { get; set; }
 
-        public virtual User User { get; set; } = null!;
+        public virtual Student Student { get; set; } = null!;
         public virtual Course Course { get; set; } = null!;
 
         public bool IsCompleted => CompletionDate.HasValue && CompletionDate.Value <= DateTime.UtcNow;
