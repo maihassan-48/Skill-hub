@@ -1,4 +1,6 @@
-﻿namespace Skill_Hub.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Skill_Hub.Models
 {
     public class Enrollment
     {
@@ -6,10 +8,11 @@
 
         public DateTime EnrollmentDate { get; set; } = DateTime.UtcNow;
         public DateTime? CompletionDate { get; set; }
+        [Range(0, 100)]
         public int ProgressPercentage { get; set; } = 0;
 
 
-        public int UserId { get; set; }
+        public int StudentId { get; set; }
         public int CourseId { get; set; }
 
         public virtual Student Student { get; set; } = null!;

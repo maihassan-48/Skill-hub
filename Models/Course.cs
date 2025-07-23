@@ -15,8 +15,8 @@ namespace Skill_Hub.Models
         public int CategoryId { get; set; }
         public Category Category { get; set; } = null!;
 
-        public int UserId { get; set; }
-        public User Instructor { get; set; } = null!;
+        public int InstructorId { get; set; }
+        public Instructor Instructor { get; set; } = null!;
 
         public virtual ICollection<Module> Modules { get; set; } = new List<Module>();
         public virtual ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();

@@ -27,11 +27,6 @@ namespace Skill_Hub.Data
                 .WithMany(c => c.Enrollments)
                 .HasForeignKey(e => e.CourseId)
                 .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Enrollment>()
-                .HasOne(e => e.Student)
-                .WithMany(u => u.Enrollments)
-                .HasForeignKey(e => e.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<User>()
      .HasKey(u => u.Id);

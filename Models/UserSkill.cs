@@ -9,7 +9,7 @@ namespace Skill_Hub.Models
         public Student Student { get; set; } = null!; 
         public int SkillId { get; set; }
         public Skill Skill { get; set; } = null!;
-        public ProficiencyLevel level { get; set; } = ProficiencyLevel.Beginner;
+        public ProficiencyLevel Level { get; set; } = ProficiencyLevel.Beginner;
 
     }
 }
