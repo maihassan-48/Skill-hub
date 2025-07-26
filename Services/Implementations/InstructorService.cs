@@ -1,9 +1,8 @@
-﻿using Skill_Hub.Models;
-using Skill_Hub.Services.Interfaces;
-using Skill_Hub.Configurations;
-using SkillHub.DTOs;
 using AutoMapper;
+using Skill_Hub.Configurations;
 using Skill_Hub.Dtos;
+using Skill_Hub.Models;
+using Skill_Hub.Services.Interfaces;
 
 namespace Skill_Hub.Services.Implementations
 {
