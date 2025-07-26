@@ -21,6 +21,19 @@ namespace Skill_Hub.Profiles
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
                 .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.User.Role))
                 .ReverseMap();
+
+            CreateMap<Student, StudentRequestDTO>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.Name))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
+                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.User.Password))
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.User.Role))
+                .ReverseMap();
+
+            CreateMap<Student, StudentResponseDTO>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.User.Name))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.User.Role))
+                .ReverseMap();
         }
     }
 }
