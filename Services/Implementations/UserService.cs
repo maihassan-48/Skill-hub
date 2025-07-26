@@ -4,6 +4,7 @@ using Skill_Hub.Dtos;
 using Skill_Hub.Enums;
 using Skill_Hub.Models;
 using Skill_Hub.Services.Interfaces;
+using SkillHub.DTOs;
 
 namespace Skill_Hub.Services.Implementations
 {
@@ -41,46 +42,6 @@ namespace Skill_Hub.Services.Implementations
         {
             var user = await _unitOfWork.userRepository.GetByName(name);
             return _mapper.Map<UserResponseDTO>(user);
-        }
-
-        public async Task<SignInResponseDTO> Create(UserRequestDTO userDto)
-        {
-            User user = _mapper.Map<User>(userDto);
-
-            if (user.Role == Role.Student)
-            {
-                user.Student = new Student
-                {
-                    StudentId = userDto.Id
-                };
-            } else if (user.Role == Role.Instructor)
-            {
-                user.Instructor = new Instructor
-                {
-                    Id = userDto.Id,
-                    Department = ""
-                };
-            } else if (user.Role == Role.Admin)
-            {
-                user.Admin = new Admin
-                {
-                    Id = userDto.Id
-                };
-            }
-
-            await _unitOfWork.userRepository.AddUser(user);
-            _unitOfWork.Save();
-
-            string token = _jwtService.GenerateToken(user, user.Role);
-
-            return new SignInResponseDTO
-            {
-                Token = token,
-                Expiration = DateTime.UtcNow.AddHours(1),
-                UserId = user.Id,
-                Name = user.Name,
-                Role = user.Role.ToString()
-            };
         }
 
         public async Task Update(UserRequestDTO userDto, int id)

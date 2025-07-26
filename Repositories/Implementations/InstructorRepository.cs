@@ -14,14 +14,23 @@ namespace Skill_Hub.Repositories.Implementations
             _context = context;
         }
 
+        public async Task AddInstructorAsync(Instructor instructor)
+        {
+            await _context.Instructors.AddAsync(instructor);
+        }
+
         public async Task<IEnumerable<Instructor>> GetAllInstructorsAsync()
         {
-            return await _context.Instructors.ToListAsync();
+            return await _context.Instructors
+                .Include(u => u.User)
+                .ToListAsync();
         }
 
         public async Task<Instructor?> GetInstructorByIdAsync(int id)
         {
-            return await _context.Instructors.FindAsync(id);
+            return await _context.Instructors
+                .Include(u => u.User)
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
     }
 }

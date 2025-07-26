@@ -1,26 +1,52 @@
 ﻿using Skill_Hub.Models;
 using Skill_Hub.Services.Interfaces;
 using Skill_Hub.Configurations;
+using SkillHub.DTOs;
+using AutoMapper;
+using Skill_Hub.Dtos;
 
 namespace Skill_Hub.Services.Implementations
 {
     public class InstructorService : IInstructorService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        private readonly JwtService _jwtService;
 
-        public InstructorService(IUnitOfWork unitOfWork)
+        public InstructorService(IUnitOfWork unitOfWork, IMapper mapper, JwtService jwtService)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
+            _jwtService = jwtService;
         }
 
-        public async Task<IEnumerable<Instructor>> GetAllInstructorsAsync()
+        public Task<SignInResponseDTO> CreateInstructorAsync(InstructorRequestDTO instructorDto)
         {
-            return await _unitOfWork.instructorRepository.GetAllInstructorsAsync();
+            var instructor = _mapper.Map<Instructor>(instructorDto);
+            _unitOfWork.instructorRepository.AddInstructorAsync(instructor);
+            _unitOfWork.Save();
+
+            var token = _jwtService.GenerateToken(instructor.User, instructor.User.Role);
+            return Task.FromResult(new SignInResponseDTO
+            {
+                Token = token,
+                Expiration = DateTime.UtcNow.AddHours(1),
+                UserId = instructor.Id,
+                Name = instructor.User.Name,
+                Role = instructor.User.Role.ToString()
+            });
         }
 
-        public async Task<Instructor?> GetInstructorByIdAsync(int id)
+        public async Task<IEnumerable<InstructorResponseDTO>> GetAllInstructorsAsync()
         {
-            return await _unitOfWork.instructorRepository.GetInstructorByIdAsync(id);
+            var instructors = await _unitOfWork.instructorRepository.GetAllInstructorsAsync();
+            return _mapper.Map<IEnumerable<InstructorResponseDTO>>(instructors);
+        }
+
+        public async Task<InstructorResponseDTO?> GetInstructorByIdAsync(int id)
+        {
+            var instructor = await _unitOfWork.instructorRepository.GetInstructorByIdAsync(id);
+            return _mapper.Map<InstructorResponseDTO>(instructor);
         }
     }
 }
