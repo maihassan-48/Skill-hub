@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Skill_Hub.Data;
+using Skill_Hub.Enums;
 using Skill_Hub.Models;
 using Skill_Hub.Repositories.Interfaces;
 
@@ -16,6 +17,22 @@ namespace Skill_Hub.Repositories.Implementations
         public async Task AddUser(User user)
         {
             await _context.Users.AddAsync(user);
+
+            if (user.Role == Role.Student && user.Student != null)
+            {
+                user.Student.User = user;
+                await _context.Students.AddAsync(user.Student);
+            }
+            else if (user.Role == Role.Instructor && user.Instructor != null)
+            {
+                user.Instructor.User = user;
+                await _context.Instructors.AddAsync(user.Instructor);
+            }
+            else if (user.Role == Role.Admin && user.Admin != null)
+            {
+                user.Admin.User = user;
+                await _context.Admins.AddAsync(user.Admin);
+            }
         }
 
         public async Task<List<User>> GetAllUsers()

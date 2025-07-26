@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Skill_Hub.Configurations;
 using Skill_Hub.Dtos;
+using Skill_Hub.Enums;
 using Skill_Hub.Models;
 using Skill_Hub.Services.Interfaces;
 
@@ -46,6 +47,27 @@ namespace Skill_Hub.Services.Implementations
         {
             User user = _mapper.Map<User>(userDto);
 
+            if (user.Role == Role.Student)
+            {
+                user.Student = new Student
+                {
+                    StudentId = userDto.Id
+                };
+            } else if (user.Role == Role.Instructor)
+            {
+                user.Instructor = new Instructor
+                {
+                    Id = userDto.Id,
+                    Department = ""
+                };
+            } else if (user.Role == Role.Admin)
+            {
+                user.Admin = new Admin
+                {
+                    Id = userDto.Id
+                };
+            }
+
             await _unitOfWork.userRepository.AddUser(user);
             _unitOfWork.Save();
 
@@ -57,7 +79,7 @@ namespace Skill_Hub.Services.Implementations
                 Expiration = DateTime.UtcNow.AddHours(1),
                 UserId = user.Id,
                 Name = user.Name,
-                Role = user.Role.ToString() 
+                Role = user.Role.ToString()
             };
         }
 
