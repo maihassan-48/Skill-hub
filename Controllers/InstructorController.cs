@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Skill_Hub.Configurations;
 using Skill_Hub.Models;
 using Skill_Hub.Services.Interfaces;
-using SkillHub.DTOs;
+using Skill_Hub.Dtos;
 
 namespace Skill_Hub.Controllers
 {

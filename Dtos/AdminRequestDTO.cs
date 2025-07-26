@@ -1,7 +1,7 @@
 ﻿using Skill_Hub.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace SkillHub.DTOs
+namespace Skill_Hub.Dtos
 {
     public class AdminRequestDTO
     {

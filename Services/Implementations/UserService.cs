@@ -4,7 +4,6 @@ using Skill_Hub.Dtos;
 using Skill_Hub.Enums;
 using Skill_Hub.Models;
 using Skill_Hub.Services.Interfaces;
-using SkillHub.DTOs;
 
 namespace Skill_Hub.Services.Implementations
 {

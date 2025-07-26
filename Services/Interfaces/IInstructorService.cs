@@ -1,6 +1,5 @@
 using Skill_Hub.Dtos;
 using Skill_Hub.Models;
-using SkillHub.DTOs;
 
 namespace Skill_Hub.Services.Interfaces
 {

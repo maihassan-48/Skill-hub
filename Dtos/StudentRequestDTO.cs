@@ -1,6 +1,6 @@
 ﻿using Skill_Hub.Enums;
 
-namespace SkillHub.DTOs
+namespace Skill_Hub.Dtos
 {
     public class StudentRequestDTO
     {
