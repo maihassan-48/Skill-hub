@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Skill_Hub.Configurations;
 using Skill_Hub.Models;
 using Skill_Hub.Services.Interfaces;
+using SkillHub.DTOs;
 
 namespace Skill_Hub.Controllers
 {
@@ -37,6 +38,15 @@ namespace Skill_Hub.Controllers
         {
             var instructor = await _instructorService.GetInstructorByIdAsync(id);
             return Ok(instructor);
+        }
+
+        [Authorize(Roles = ADMIN_ROLE)]
+        [HttpPost]
+        public async Task<IActionResult> CreateInstructor([FromBody] InstructorRequestDTO instructor)
+        {
+            // Assuming you have a method to create an instructor in the service
+            var signInResponse = await _instructorService.CreateInstructorAsync(instructor);
+            return Ok(signInResponse);
         }
     }
 }

@@ -60,13 +60,6 @@ namespace Skill_Hub.Controllers
             return Ok(user);
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> Create([FromBody] UserRequestDTO userRequest)
-        {
-            var result = await _userService.Create(userRequest);
-            return CreatedAtAction(nameof(GetById), new { id = result.UserId }, result);
-        }
-
         [Authorize]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update([FromBody] UserRequestDTO userRequest, int id)

@@ -6,5 +6,6 @@ namespace Skill_Hub.Repositories.Interfaces
     {
         Task<Instructor?> GetInstructorByIdAsync(int id);
         Task<IEnumerable<Instructor>> GetAllInstructorsAsync();
+        Task AddInstructorAsync(Instructor instructor);
     }
 }
