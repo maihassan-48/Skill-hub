@@ -47,5 +47,13 @@ namespace Skill_Hub.Services.Implementations
             var instructor = await _unitOfWork.instructorRepository.GetInstructorByIdAsync(id);
             return _mapper.Map<InstructorResponseDTO>(instructor);
         }
+
+        public async Task UpdateInstructor(InstructorRequestDTO instructorDto, int id)
+        {
+            var instructor = _mapper.Map<Instructor>(instructorDto);
+            await _unitOfWork.instructorRepository.UpdateInstructorAsync(instructor, id);
+            _unitOfWork.Save();
+
+        }
     }
 }

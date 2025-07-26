@@ -32,5 +32,22 @@ namespace Skill_Hub.Repositories.Implementations
                 .Include(u => u.User)
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
+
+        public async Task UpdateInstructorAsync(Instructor instructor, int id)
+        {
+            var existingInstructor = await _context.Instructors
+                .Include(i => i.User)
+                .FirstOrDefaultAsync(i => i.Id == id);
+
+            if (existingInstructor != null)
+            {
+                existingInstructor.Department = instructor.Department;
+                existingInstructor.User.Name = instructor.User.Name;
+                existingInstructor.User.Email = instructor.User.Email;
+                existingInstructor.User.Role = instructor.User.Role;
+                existingInstructor.User.Password = instructor.User.Password;
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

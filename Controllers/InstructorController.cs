@@ -44,9 +44,17 @@ namespace Skill_Hub.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateInstructor([FromBody] InstructorRequestDTO instructor)
         {
-            // Assuming you have a method to create an instructor in the service
             var signInResponse = await _instructorService.CreateInstructorAsync(instructor);
             return Ok(signInResponse);
         }
+
+        [Authorize(Roles = INSTRUCTOR_ADMIN_ROLES)]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateInstructor([FromBody] InstructorRequestDTO instructor, int id)
+        {
+            await _instructorService.UpdateInstructor(instructor, id);
+            return Ok(instructor);
+        }
+
     }
 }

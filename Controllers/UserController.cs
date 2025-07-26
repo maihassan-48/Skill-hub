@@ -29,7 +29,7 @@ namespace Skill_Hub.Controllers
         }
 
         [Authorize(Roles = INSTRUCTOR_ADMIN_ROLES)]
-        [HttpGet("all")]
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var users = await _userService.GetAll();
@@ -60,16 +60,8 @@ namespace Skill_Hub.Controllers
             return Ok(user);
         }
 
-        [Authorize]
-        [HttpPut("update/{id}")]
-        public async Task<IActionResult> Update([FromBody] UserRequestDTO userRequest, int id)
-        {
-            await _userService.Update(userRequest, id);
-            return Ok();
-        }
-
         [Authorize(Roles = INSTRUCTOR_ADMIN_ROLES)]
-        [HttpDelete("delete/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await _userService.Delete(id);

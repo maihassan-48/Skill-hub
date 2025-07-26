@@ -9,7 +9,6 @@ namespace Skill_Hub.Services.Interfaces
         public Task<UserResponseDTO?> GetById(int id);
         public Task<UserResponseDTO?> GetByName(string name);
         public Task<UserResponseDTO?>  GetByEmail(string email);
-        public Task Update(UserRequestDTO user, int id);
         public Task Delete(int id);
         public Task<SignInResponseDTO> SignIn(SignInRequestDTO signInRequestDTO);
     }

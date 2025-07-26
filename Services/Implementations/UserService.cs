@@ -43,17 +43,6 @@ namespace Skill_Hub.Services.Implementations
             return _mapper.Map<UserResponseDTO>(user);
         }
 
-        public async Task Update(UserRequestDTO userDto, int id)
-        {
-            User user = _mapper.Map<User>(userDto);
-
-            if (await _unitOfWork.userRepository.UpdateUser(user, id) == 0)
-            {
-                throw new Exception("User not found");
-            }
-            _unitOfWork.Save();
-        }
-
         public async Task Delete(int id)
         {
             if (await _unitOfWork.userRepository.DeleteUser(id) == 0)

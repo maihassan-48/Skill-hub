@@ -7,6 +7,7 @@ namespace Skill_Hub.Services.Interfaces
     {
         Task<InstructorResponseDTO?> GetInstructorByIdAsync(int id);
         Task<IEnumerable<InstructorResponseDTO>> GetAllInstructorsAsync();
-        Task<SignInResponseDTO> CreateInstructorAsync(InstructorRequestDTO instructor);
+        Task<SignInResponseDTO> CreateInstructorAsync(InstructorRequestDTO instructorDto);
+        Task UpdateInstructor(InstructorRequestDTO instructorDto, int id);
     }
 }
