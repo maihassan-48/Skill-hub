@@ -1,4 +1,6 @@
-﻿using Skill_Hub.Models;
+﻿using AutoMapper;
+using Skill_Hub.Dtos;
+using Skill_Hub.Models;
 using Skill_Hub.Repositories.Implementations;
 using Skill_Hub.Services.Interfaces;
 
@@ -7,10 +9,12 @@ namespace Skill_Hub.Services.Implementations
     public class CategoryService : ICategoryService
     {
         private readonly UnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public CategoryService(UnitOfWork unitOfWork)
+        public CategoryService(UnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<Category?> GetCategoryByIdAsync(int categoryId)
@@ -19,10 +23,13 @@ namespace Skill_Hub.Services.Implementations
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
             => await _unitOfWork.Categories.GetAllCategoriesAsync();
 
-        public async Task AddCategoryAsync(Category category)
+        public async Task<Category> AddCategoryAsync(CreateCategoryDto categoryDto)
         {
+            var category = _mapper.Map<Category>(categoryDto);
             await _unitOfWork.Categories.AddCategoryAsync(category);
             await _unitOfWork.CompleteAsync();
+
+            return category;
         }
 
         public async Task UpdateCategoryAsync(Category category)

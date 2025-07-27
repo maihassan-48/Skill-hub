@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Skill_Hub.Configurations;
 using Skill_Hub.Data;
+using Skill_Hub.Profiles;
 using Skill_Hub.Repositories.Implementations;
 using Skill_Hub.Repositories.Interfaces;
 using Skill_Hub.Services;
@@ -22,12 +23,15 @@ builder.Services.AddSwaggerGen();
 // Register repositories
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
 
 // Register services
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 builder.Services.AddScoped<JwtService>();
 
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 // Register UnitOfWork
 builder.Services.AddScoped<UnitOfWork>();

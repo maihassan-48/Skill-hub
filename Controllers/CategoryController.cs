@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Skill_Hub.Dtos;
 using Skill_Hub.Models;
 using Skill_Hub.Services.Interfaces;
 
@@ -33,14 +35,15 @@ namespace Skill_Hub.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create([FromBody] Category category)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Create([FromBody] CreateCategoryDto categoryDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _categoryService.AddCategoryAsync(category);
-            return CreatedAtAction(nameof(GetById), new { id = category.Id }, category);
+            var newCategory = await _categoryService.AddCategoryAsync(categoryDto);
+
+            return CreatedAtAction(nameof(GetById), new { id = newCategory.Id }, newCategory);
         }
 
         [HttpPut("{id}")]

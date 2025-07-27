@@ -5,6 +5,7 @@
     {
         ICourseRepository Courses { get; }
         ICategoryRepository Categories { get; }
+        IModuleRepository Modules { get; }
         Task<int> CompleteAsync();
     }
 

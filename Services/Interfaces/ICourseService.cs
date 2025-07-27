@@ -1,6 +1,7 @@
-﻿using Skill_Hub.Models;
+﻿using Skill_Hub.Dtos;
+using Skill_Hub.Models;
 
-namespace Skill_Hub.Services
+namespace Skill_Hub.Services.Interfaces
 {
     public interface ICourseService
     {
@@ -8,7 +9,7 @@ namespace Skill_Hub.Services
         Task<IEnumerable<Course>> GetAllCoursesAsync();
         Task<IEnumerable<Course>> GetCoursesByCategoryAsync(int categoryId);
         Task<IEnumerable<Course>> GetCoursesByInstructorAsync(int instructorId);
-        Task AddCourseAsync(Course course);
+        Task<Course> AddCourseAsync(CreateCourseDto createCourseDto);
         Task UpdateCourseAsync(Course course);
         Task DeleteCourseAsync(int courseId);
     }

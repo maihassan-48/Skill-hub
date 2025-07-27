@@ -1,4 +1,5 @@
-﻿using Skill_Hub.Models;
+﻿using Skill_Hub.Dtos;
+using Skill_Hub.Models;
 
 namespace Skill_Hub.Services.Interfaces
 {
@@ -6,7 +7,7 @@ namespace Skill_Hub.Services.Interfaces
     {
         Task<Category?> GetCategoryByIdAsync(int categoryId);
         Task<IEnumerable<Category>> GetAllCategoriesAsync();
-        Task AddCategoryAsync(Category category);
+        Task<Category> AddCategoryAsync(CreateCategoryDto category);
         Task UpdateCategoryAsync(Category category);
         Task DeleteCategoryAsync(int categoryId);
     }
