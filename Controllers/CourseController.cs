@@ -12,16 +12,24 @@ namespace Skill_Hub.Controllers
     public class CourseController : ControllerBase
     {
         private readonly ICourseService _courseService;
+        private const string STUDENT_ROLE = "1";
+        private const string INSTRUCTOR_ROLE = "2";
+        private const string ADMIN_ROLE = "3";
+        private const string INSTRUCTOR_ADMIN_ROLES = "2,3";
         public CourseController(ICourseService courseService)
         {
             _courseService = courseService;
         }
+
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var courses = await _courseService.GetAllCoursesAsync();
             return Ok(courses);
         }
+
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -31,7 +39,7 @@ namespace Skill_Hub.Controllers
             return Ok(course);
         }
         [HttpPost]
-        [Authorize(Roles = "Instructor")]
+        [Authorize(Roles = INSTRUCTOR_ROLE)]
         public async Task<IActionResult> Create([FromBody] CreateCourseDto courseDto)
         {
             if (!ModelState.IsValid)
@@ -42,7 +50,7 @@ namespace Skill_Hub.Controllers
             return CreatedAtAction(nameof(GetById), new { id = newCourse.Id }, newCourse);
         }
         [HttpPut("{id}")]
-        [Authorize(Roles = "Instructor")]
+        [Authorize(Roles = INSTRUCTOR_ROLE)]
         public async Task<IActionResult> Update(int id, [FromBody] Course course)
         {
             if (!ModelState.IsValid)
@@ -53,7 +61,7 @@ namespace Skill_Hub.Controllers
             return NoContent();
         }
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Instructor")]
+        [Authorize(Roles = INSTRUCTOR_ROLE)]
         public async Task<IActionResult> Delete(int id)
         {
             string token = Request.Headers.Authorization.ToString().Replace("Bearer ", "");

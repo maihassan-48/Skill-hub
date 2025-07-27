@@ -12,6 +12,11 @@ namespace Skill_Hub.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
+        private const string STUDENT_ROLE = "1";
+        private const string INSTRUCTOR_ROLE = "2";
+        private const string ADMIN_ROLE = "3";
+        private const string INSTRUCTOR_ADMIN_ROLES = "2,3";
+
 
         public CategoryController(ICategoryService categoryService)
         {
@@ -35,7 +40,7 @@ namespace Skill_Hub.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = ADMIN_ROLE)]
         public async Task<IActionResult> Create([FromBody] CreateCategoryDto categoryDto)
         {
             if (!ModelState.IsValid)
@@ -47,7 +52,7 @@ namespace Skill_Hub.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = ADMIN_ROLE)]
         public async Task<IActionResult> Update(int id, [FromBody] Category category)
         {
 
@@ -56,7 +61,7 @@ namespace Skill_Hub.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = ADMIN_ROLE)]
         public async Task<IActionResult> Delete(int id)
         {
             await _categoryService.DeleteCategoryAsync(id);

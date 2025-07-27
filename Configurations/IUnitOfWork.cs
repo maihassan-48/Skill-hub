@@ -8,6 +8,9 @@ namespace Skill_Hub.Configurations
         public IUserRepository userRepository { get; }
         public IEnrollmentRepository enrollmentRepository { get; }
         public IStudentRepository StudentRepository{get; }
+        public ICourseRepository CourseRepository { get; }
+        public ICategoryRepository CategoryRepository { get; }
+        public IModuleRepository ModuleRepository { get; }
 
         public void Save();
     }

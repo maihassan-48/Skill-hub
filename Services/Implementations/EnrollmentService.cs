@@ -30,7 +30,12 @@ namespace Skill_Hub.Services.Implementations
                 throw new InvalidOperationException("Student not found.");
             }
             enrollment.Student = student;
-            enrollment.Course = await _unitOfWork.courseRepository.GetCourseById(enrollmentDto.CourseId);
+            Course? course = await _unitOfWork.CourseRepository.GetCourseByIdAsync(enrollmentDto.CourseId);
+            if (course == null)
+            {
+                throw new InvalidOperationException("Course not found.");
+            }
+            enrollment.Course = course;
             await _unitOfWork.enrollmentRepository.Enroll(enrollment);
         }
 
