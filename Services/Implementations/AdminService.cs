@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Skill_Hub.Configurations;
 using Skill_Hub.Dtos;
+using Skill_Hub.Enums;
 using Skill_Hub.Models;
 
 namespace Skill_Hub.Services.Interfaces
@@ -20,6 +21,7 @@ namespace Skill_Hub.Services.Interfaces
 
         public async Task<SignInResponseDTO> CreateAdminAsync(AdminRequestDTO adminDTO)
         {
+            adminDTO.Role = Role.Admin;
             var admin = _mapper.Map<Admin>(adminDTO);
             await _unitOfWork.AdminRepository.AddAdminAsync(admin);
             _unitOfWork.Save();
