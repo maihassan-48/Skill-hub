@@ -5,46 +5,49 @@ using Skill_Hub.Repositories.Interfaces;
 
 namespace Skill_Hub.Repositories.Implementations
 {
-    public class AdminRepository : IAdminRepository
+    public class StudentRepository : IStudentRepository
     {
         private readonly Context _context;
 
-        public AdminRepository(Context context)
+        public StudentRepository(Context context)
         {
             _context = context;
         }
 
-        public async Task AddAdminAsync(Admin admin)
+        public async Task AddStudentAsync(Student student)
         {
-            await _context.Admins.AddAsync(admin);
+            await _context.Students.AddAsync(student);
         }
 
-        public async Task<IEnumerable<Admin>> GetAllAdminsAsync()
+        public async Task<IEnumerable<Student>> GetAllStudentsAsync()
         {
-            return await _context.Admins
+            return await _context.Students
                 .Include(u => u.User)
                 .ToListAsync();
         }
 
-        public async Task<Admin?> GetAdminByIdAsync(int id)
+        public async Task<Student?> GetStudentByIdAsync(int id)
         {
-            return await _context.Admins
+            return await _context.Students
                 .Include(u => u.User)
-                .FirstOrDefaultAsync(u => u.Id == id);
+                .FirstOrDefaultAsync(u => u.StudentId == id);
         }
 
-        public async Task<int> UpdateAdminAsync(int id, Admin updatedAdmin)
+        public async Task<int> UpdateStudentAsync(int id, Student updatedStudent)
         {
-            return await _context.Admins.Where(s => s.Id == id).ExecuteUpdateAsync(
+            return await _context.Students.Where(s => s.StudentId == id).ExecuteUpdateAsync(
                 setters => setters
-                .SetProperty(s => s.Permissions, updatedAdmin.Permissions)
-                .SetProperty(s => s.User, updatedAdmin.User)
+                .SetProperty(s => s.DateOfBirth, updatedStudent.DateOfBirth)
+                .SetProperty(s => s.Major, updatedStudent.Major)
+                .SetProperty(s => s.User, updatedStudent.User)
+                .SetProperty(s => s.Courses, updatedStudent.Courses)
+                .SetProperty(s => s.Skills, updatedStudent.Skills)
                 );
         }
 
-        public async Task<int> DeleteAdminAsync(int id)
+        public async Task<int> DeleteStudentAsync(int id)
         {
-            return await _context.Admins.Where(s => s.Id == id).ExecuteDeleteAsync();
+            return await _context.Students.Where(s => s.StudentId == id).ExecuteDeleteAsync();
         }
     }
 }
