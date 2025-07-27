@@ -7,6 +7,7 @@ using Skill_Hub.Data;
 using Skill_Hub.Profiles;
 using Skill_Hub.Repositories.Implementations;
 using Skill_Hub.Repositories.Interfaces;
+using Skill_Hub.Services;
 using Skill_Hub.Services.Implementations;
 using Skill_Hub.Services.Interfaces;
 using System.Text;
@@ -20,8 +21,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.AddAutoMapper(typeof(UserMappingProfile));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddAutoMapper(typeof(EnrollmentProfile));
+
 
 
 builder.Services.AddScoped<JwtService>();
@@ -35,8 +39,11 @@ builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
 
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IStudentService, StudentService>();
-
-
+builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
 
 builder.Services.AddDbContext<Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
