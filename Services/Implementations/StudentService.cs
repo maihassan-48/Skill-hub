@@ -50,6 +50,11 @@ namespace Skill_Hub.Services.Interfaces
 
         public async Task UpdateStudentAsync(int id, StudentRequestDTO studentDTO)
         {
+            if(id != studentDTO.Id)
+            {
+                throw new Exception("IDs don't match");
+            }
+
             var student = _mapper.Map<Student>(studentDTO);
 
             int rowsAffected = await _unitOfWork.StudentRepository.UpdateStudentAsync(id, student);
