@@ -24,7 +24,7 @@ namespace Skill_Hub.Controllers
             _jwtService = jwtService;
         }
 
-        //[Authorize(Roles = ADMIN_ROLE)]
+        [Authorize(Roles = INSTRUCTOR_ADMIN_ROLES)]
         [HttpGet]
         public async Task<IActionResult> GetStudents()
         {
@@ -32,7 +32,7 @@ namespace Skill_Hub.Controllers
             return Ok(students);
         }
 
-        //[Authorize(Roles = ADMIN_ROLE)]
+        [Authorize(Roles = INSTRUCTOR_ADMIN_ROLES)]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetStudent(int id)
         {
@@ -40,7 +40,7 @@ namespace Skill_Hub.Controllers
             return Ok(student);
         }
 
-        //[Authorize(Roles = ADMIN_ROLE)]
+        [Authorize(Roles = ADMIN_ROLE)]
         [HttpPost]
         public async Task<IActionResult> CreateStudent([FromBody] StudentRequestDTO student)
         {
@@ -49,7 +49,7 @@ namespace Skill_Hub.Controllers
             return Ok(signInResponse);
         }
 
-        //[Authorize(Roles = ADMIN_ROLE)]
+        [Authorize(Roles = ADMIN_ROLE)]
         [HttpPut]
         public async Task<IActionResult> UpdateStudent(int id, StudentRequestDTO student)
         {
