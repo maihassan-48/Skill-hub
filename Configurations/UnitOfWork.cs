@@ -11,6 +11,9 @@ namespace Skill_Hub.Configurations
         private IUserRepository _userRepository;
         private IEnrollmentRepository _enrollmentRepository;
         private IStudentRepository _studentRepository;
+        private ICourseRepository _courseRepository;
+        private ICategoryRepository _categoryRepository;
+        private IModuleRepository _moduleRepository;
 
         public UnitOfWork(Context context)
         {
@@ -46,6 +49,30 @@ namespace Skill_Hub.Configurations
             get
             {
                 return _studentRepository = _studentRepository ?? new StudentRepository(_context);
+            }
+        }
+
+        public ICourseRepository CourseRepository
+        {
+            get
+            {
+                return _courseRepository = _courseRepository ?? new CourseRepository(_context);
+            }
+        }
+
+        public ICategoryRepository CategoryRepository
+        {
+            get
+            {
+                return _categoryRepository = _categoryRepository ?? new CategoryRepository(_context);
+            }
+        }
+
+        public IModuleRepository ModuleRepository
+        {
+            get
+            {
+                return _moduleRepository = _moduleRepository ?? new ModuleRepository(_context);
             }
         }
 

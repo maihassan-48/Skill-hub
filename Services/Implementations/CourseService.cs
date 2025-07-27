@@ -22,24 +22,24 @@ namespace Skill_Hub.Services.Implementations
         }
 
         public async Task<Course?> GetCourseByIdAsync(int courseId)
-            => await _unitOfWork.Courses.GetCourseByIdAsync(courseId);
+            => await _unitOfWork.CourseRepository.GetCourseByIdAsync(courseId);
 
         public async Task<IEnumerable<Course>> GetAllCoursesAsync()
-            => await _unitOfWork.Courses.GetAllCoursesAsync();
+            => await _unitOfWork.CourseRepository.GetAllCoursesAsync();
 
         public async Task<IEnumerable<Course>> GetCoursesByCategoryAsync(int categoryId)
-            => await _unitOfWork.Courses.GetCoursesByCategoryAsync(categoryId);
+            => await _unitOfWork.CourseRepository.GetCoursesByCategoryAsync(categoryId);
 
         public async Task<IEnumerable<Course>> GetCoursesByInstructorAsync(int instructorId)
-            => await _unitOfWork.Courses.GetCoursesByInstructorAsync(instructorId);
+            => await _unitOfWork.CourseRepository.GetCoursesByInstructorAsync(instructorId);
 
         public async Task<Course> AddCourseAsync(CreateCourseDto createCourseDto, string token)
         {
             var id = _jwtService.GetUserIdFromToken(token);
             var course =  _map.Map<Course>(createCourseDto);
-            course.Instructor.Id = id;
-            await _unitOfWork.Courses.AddCourseAsync(course);
-            await _unitOfWork.CompleteAsync();
+            course.InstructorId = id;
+            await _unitOfWork.CourseRepository.AddCourseAsync(course);
+            _unitOfWork.Save();
             return course;
         }
 
@@ -47,7 +47,7 @@ namespace Skill_Hub.Services.Implementations
         {
             var instructorId = _jwtService.GetUserIdFromToken(token);
 
-            var existingCourse = await _unitOfWork.Courses.GetCourseByIdAsync(updatedCourse.Id);
+            var existingCourse = await _unitOfWork.CourseRepository.GetCourseByIdAsync(updatedCourse.Id);
             if (existingCourse == null || existingCourse.InstructorId != instructorId)
             {
                 throw new UnauthorizedAccessException("You are not authorized to update this course.");
@@ -55,8 +55,8 @@ namespace Skill_Hub.Services.Implementations
 
             updatedCourse.InstructorId = instructorId;
 
-            await _unitOfWork.Courses.UpdateCourseAsync(updatedCourse);
-            await _unitOfWork.CompleteAsync();
+            await _unitOfWork.CourseRepository.UpdateCourseAsync(updatedCourse);
+            _unitOfWork.Save();
         }
 
 
@@ -64,14 +64,14 @@ namespace Skill_Hub.Services.Implementations
         {
             var instructorId = _jwtService.GetUserIdFromToken(token);
 
-            var course = await _unitOfWork.Courses.GetCourseByIdAsync(courseId);
+            var course = await _unitOfWork.CourseRepository.GetCourseByIdAsync(courseId);
             if (course == null || course.InstructorId != instructorId)
             {
                 throw new UnauthorizedAccessException("You are not authorized to delete this course.");
             }
 
-            await _unitOfWork.Courses.DeleteCourseAsync(courseId);
-            await _unitOfWork.CompleteAsync();
+            await _unitOfWork.CourseRepository.DeleteCourseAsync(courseId);
+            _unitOfWork.Save();
         }
 
     }

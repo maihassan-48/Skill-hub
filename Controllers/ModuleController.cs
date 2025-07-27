@@ -9,6 +9,11 @@ namespace Skill_Hub.Controllers
     public class ModuleController: ControllerBase
     {
         private readonly IModuleService _moduleService;
+        private const string STUDENT_ROLE = "1";
+        private const string INSTRUCTOR_ROLE = "2";
+        private const string ADMIN_ROLE = "3";
+        private const string INSTRUCTOR_ADMIN_ROLES = "2,3";
+
         public ModuleController(IModuleService moduleService)
         {
             _moduleService = moduleService;
@@ -29,26 +34,30 @@ namespace Skill_Hub.Controllers
             return Ok(module);
         }
         [HttpPost]
-        [Authorize(Roles = "Instructor")]
+        [Authorize(Roles = INSTRUCTOR_ROLE)]
         public async Task<IActionResult> Create([FromBody] CreateModuleDto moduleDto)
         {
+            string token = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var newModule = await _moduleService.AddModuleAsync(moduleDto);
+            var newModule = await _moduleService.AddModuleAsync(moduleDto, token);
             return CreatedAtAction(nameof(GetById), new { id = newModule.Id }, newModule);
         }
         [HttpPut("{id}")]
-        //[Authorize(Roles = "Instructor")]
+        //[Authorize(Roles = INSTRUCTOR_ROLE)]
         public async Task<IActionResult> Update(int id, [FromBody] Module module)
         {
-            await _moduleService.UpdateModuleAsync(module);
+            string token = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
+            await _moduleService.UpdateModuleAsync(module, token);
             return NoContent();
         }
         [HttpDelete("{id}")]
-        //[Authorize(Roles = "Instructor")]
+        //[Authorize(Roles = INSTRUCTOR_ROLE)]
         public async Task<IActionResult> Delete(int id)
         {
-            await _moduleService.DeleteModuleAsync(id);
+            string token = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
+            await _moduleService.DeleteModuleAsync(id, token);
             return NoContent();
         }
     }
