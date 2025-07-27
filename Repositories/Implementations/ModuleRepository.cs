@@ -5,7 +5,7 @@ using Skill_Hub.Repositories.Interfaces;
 
 namespace Skill_Hub.Repositories.Implementations
 {
-    public class ModuleRepository: IModuleRepository
+    public class ModuleRepository : IModuleRepository
     {
         private readonly Context _context;
         public ModuleRepository(Context context)
@@ -18,27 +18,28 @@ namespace Skill_Hub.Repositories.Implementations
         }
         public async Task<IEnumerable<Module>> GetAllModulesByCourseIdAsync(int courseId)
         {
-            return await _context.Modules
-                .Include(m => m.Course)
-                .Where(m => m.Course.Id == courseId)
+            return await _context.Courses.Where(c => c.Id == courseId)
+                .SelectMany(c => c.Modules)
                 .ToListAsync();
         }
-        public async Task<Module> AddModuleAsync(Module module)
+        public Task AddModuleAsync(Module module)
         {
-            await _context.Modules.AddAsync(module);
-            await _context.SaveChangesAsync();
-            return module;
+            _context.Modules.Add(module);
+            return Task.CompletedTask;
+
         }
-        public async Task UpdateModuleAsync(Module module)
+        public Task UpdateModuleAsync(Module module)
         {
             _context.Modules.Update(module);
-            await _context.SaveChangesAsync();
+            return Task.CompletedTask;
         }
-        public async Task DeleteModuleAsync(int moduleId)
+        public  Task DeleteModuleAsync(int moduleId)
         {
-            Module module = new() { Id = moduleId, Title = string.Empty, Content = null!, Course = null! };
-            _context.Modules.Attach(module);
-            _context.Modules.Remove(module);
-            await _context.SaveChangesAsync();
+            //var module = new Module { Id = moduleId };
+            //_context.Modules.Remove(module);
+            //return Task.CompletedTask;
+            return Task.CompletedTask;
+
         }
+    }
 }

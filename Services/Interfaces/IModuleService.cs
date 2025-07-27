@@ -7,8 +7,8 @@ namespace Skill_Hub.Services.Interfaces
     {
         Task<Module?> GetModuleByIdAsync(int moduleId);
         Task<IEnumerable<Module>> GetAllModulesByCourseIdAsync(int courseId);
-        Task<Module> AddModuleAsync(CreateModuleDto createModelDto);
-        Task UpdateModuleAsync(Module module);
-        Task DeleteModuleAsync(int moduleId);
+        Task<Module> AddModuleAsync(CreateModuleDto createModelDto, string token);
+        Task UpdateModuleAsync(Module module, string token);
+        Task DeleteModuleAsync(int moduleId, string token);
     }
 }

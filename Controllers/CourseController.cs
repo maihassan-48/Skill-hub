@@ -36,21 +36,28 @@ namespace Skill_Hub.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var newCourse = await _courseService.AddCourseAsync(courseDto);
+
+            string token = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
+            var newCourse = await _courseService.AddCourseAsync(courseDto, token);
             return CreatedAtAction(nameof(GetById), new { id = newCourse.Id }, newCourse);
         }
         [HttpPut("{id}")]
-        //[Authorize(Roles = "Instructor")]
+        [Authorize(Roles = "Instructor")]
         public async Task<IActionResult> Update(int id, [FromBody] Course course)
         {
-            await _courseService.UpdateCourseAsync(course);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            string token = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
+            course.Id = id;
+            await _courseService.UpdateCourseAsync(course, token);
             return NoContent();
         }
         [HttpDelete("{id}")]
-        //[Authorize(Roles = "Instructor")]
+        [Authorize(Roles = "Instructor")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _courseService.DeleteCourseAsync(id);
+            string token = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
+            await _courseService.DeleteCourseAsync(id, token);
             return NoContent();
         }
     }
