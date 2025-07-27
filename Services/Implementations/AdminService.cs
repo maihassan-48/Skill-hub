@@ -47,28 +47,30 @@ namespace Skill_Hub.Services.Interfaces
             return _mapper.Map<AdminResponseDTO>(admins);
         }
 
-        public async Task<bool> UpdateAdminAsync(int id, AdminRequestDTO adminDTO)
+        public async Task UpdateAdminAsync(int id, AdminRequestDTO adminDTO)
         {
             var admin = _mapper.Map<Admin>(adminDTO);
 
             int rowsAffected = await _unitOfWork.AdminRepository.UpdateAdminAsync(id, admin);
 
-            _unitOfWork.Save();
+            if (rowsAffected == 0)
+            {
+                throw new Exception("Admin not found");
+            }
 
-            if (rowsAffected == 0) return false;
-            
-            return true;
+            _unitOfWork.Save();
         }
 
-        public async Task<bool> DeleteAdminAsync(int id)
+        public async Task DeleteAdminAsync(int id)
         {
             int rowsAffected =  await _unitOfWork.AdminRepository.DeleteAdminAsync(id);
 
+            if (rowsAffected == 0)
+            {
+                throw new Exception("Admin not found");
+            }
+
             _unitOfWork.Save();
-
-            if (rowsAffected == 0) return false;
-
-            return true;
         }
     }
 }
