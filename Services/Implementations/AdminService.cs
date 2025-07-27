@@ -49,6 +49,11 @@ namespace Skill_Hub.Services.Interfaces
 
         public async Task UpdateAdminAsync(int id, AdminRequestDTO adminDTO)
         {
+            if (id != adminDTO.Id)
+            {
+                throw new Exception("IDs don't match");
+            }
+
             var admin = _mapper.Map<Admin>(adminDTO);
 
             int rowsAffected = await _unitOfWork.AdminRepository.UpdateAdminAsync(id, admin);
