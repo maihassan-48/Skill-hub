@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Skill_Hub.Configurations;
 using Skill_Hub.Dtos;
+using Skill_Hub.Enums;
 using Skill_Hub.Models;
 using System.Security.AccessControl;
 
@@ -19,14 +20,15 @@ namespace Skill_Hub.Services.Interfaces
             _jwtService = jwtService;
         }
 
-        public Task<SignInResponseDTO> CreateStudentAsync(StudentRequestDTO studentDTO)
+        public async Task<SignInResponseDTO> CreateStudentAsync(StudentRequestDTO studentDTO)
         {
+            studentDTO.Role = Role.Student;
             var student = _mapper.Map<Student>(studentDTO);
-            _unitOfWork.StudentRepository.AddStudentAsync(student);
+            await _unitOfWork.StudentRepository.AddStudentAsync(student);
             _unitOfWork.Save();
 
             var token = _jwtService.GenerateToken(student.User, student.User.Role);
-            return Task.FromResult(new SignInResponseDTO
+            return await Task.FromResult(new SignInResponseDTO
             {
                 Token = token,
                 Expiration = DateTime.UtcNow.AddHours(1),
@@ -48,16 +50,22 @@ namespace Skill_Hub.Services.Interfaces
             return _mapper.Map<StudentResponseDTO>(students);
         }
 
-        public async Task<int> UpdateStudentAsync(int id, StudentRequestDTO studentDTO)
+        public async Task UpdateStudentAsync(int id, StudentRequestDTO studentDTO)
         {
+            if(id != studentDTO.Id)
+            {
+                throw new Exception("IDs don't match");
+            }
+
             var student = _mapper.Map<Student>(studentDTO);
 
-            return await _unitOfWork.StudentRepository.UpdateStudentAsync(id, student);
-        }
+            if(!await _unitOfWork.StudentRepository.UpdateStudentAsync(id, student))
+            {
+                throw new Exception("Student not found");
+            }
 
-        public async Task<int> DeleteStudentAsync(int id)
-        {
-            return await _unitOfWork.StudentRepository.DeleteStudentAsync(id);
+            _unitOfWork.Save();
+
         }
     }
 }

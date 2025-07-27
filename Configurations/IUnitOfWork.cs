@@ -12,6 +12,7 @@ namespace Skill_Hub.Configurations
         public ICategoryRepository CategoryRepository { get; }
         public IModuleRepository ModuleRepository { get; }
 
+        public IAdminRepository AdminRepository { get; }
         public void Save();
     }
 }

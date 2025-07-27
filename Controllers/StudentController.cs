@@ -24,7 +24,7 @@ namespace Skill_Hub.Controllers
             _jwtService = jwtService;
         }
 
-        [Authorize(Roles = ADMIN_ROLE)]
+        [Authorize(Roles = INSTRUCTOR_ADMIN_ROLES)]
         [HttpGet]
         public async Task<IActionResult> GetStudents()
         {
@@ -32,7 +32,7 @@ namespace Skill_Hub.Controllers
             return Ok(students);
         }
 
-        [Authorize(Roles = ADMIN_ROLE)]
+        [Authorize(Roles = INSTRUCTOR_ADMIN_ROLES)]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetStudent(int id)
         {
@@ -47,6 +47,22 @@ namespace Skill_Hub.Controllers
             // Assuming you have a method to create an student in the service
             var signInResponse = await _studentService.CreateStudentAsync(student);
             return Ok(signInResponse);
+        }
+
+        [Authorize(Roles = ADMIN_ROLE)]
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateStudent(int id, StudentRequestDTO student)
+        {
+            try
+            {
+                await _studentService.UpdateStudentAsync(id, student);
+                return Ok("Student Updated Successfullly");
+            }   
+
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

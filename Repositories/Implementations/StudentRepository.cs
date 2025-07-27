@@ -33,21 +33,21 @@ namespace Skill_Hub.Repositories.Implementations
                 .FirstOrDefaultAsync(u => u.StudentId == id);
         }
 
-        public async Task<int> UpdateStudentAsync(int id, Student updatedStudent)
+        public async Task<bool> UpdateStudentAsync(int id, Student updatedStudent)
         {
-            return await _context.Students.Where(s => s.StudentId == id).ExecuteUpdateAsync(
-                setters => setters
-                .SetProperty(s => s.DateOfBirth, updatedStudent.DateOfBirth)
-                .SetProperty(s => s.Major, updatedStudent.Major)
-                .SetProperty(s => s.User, updatedStudent.User)
-                .SetProperty(s => s.Courses, updatedStudent.Courses)
-                .SetProperty(s => s.Skills, updatedStudent.Skills)
-                );
-        }
+            var student = await _context.Students.Where(s => s.StudentId == id)
+                                 .Include(u => u.User)
+                                 .FirstOrDefaultAsync();
 
-        public async Task<int> DeleteStudentAsync(int id)
-        {
-            return await _context.Students.Where(s => s.StudentId == id).ExecuteDeleteAsync();
+            if (student == null) return false;
+
+            student.User.Name = updatedStudent.User.Name;
+            student.User.Email = updatedStudent.User.Email;
+            student.User.Password = updatedStudent.User.Password;
+            student.Major = updatedStudent.Major;
+            student.DateOfBirth = updatedStudent.DateOfBirth;
+
+            return true;
         }
     }
 }
