@@ -33,7 +33,7 @@ namespace Skill_Hub.Configurations
             }
         }
 
-        public IStudentRepository studentRepository
+        public IStudentRepository StudentRepository
         {
             get
             {
