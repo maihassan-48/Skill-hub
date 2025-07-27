@@ -33,18 +33,20 @@ namespace Skill_Hub.Repositories.Implementations
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public async Task<int> UpdateAdminAsync(int id, Admin updatedAdmin)
+        public async Task<bool> UpdateAdminAsync(int id, Admin updatedAdmin)
         {
-            return await _context.Admins.Where(s => s.Id == id).ExecuteUpdateAsync(
-                setters => setters
-                .SetProperty(s => s.Permissions, updatedAdmin.Permissions)
-                .SetProperty(s => s.User, updatedAdmin.User)
-                );
-        }
+            var admin = await _context.Admins.Where(s => s.Id == id)
+                                             .Include(u => u.User)
+                                             .FirstOrDefaultAsync();
 
-        public async Task<int> DeleteAdminAsync(int id)
-        {
-            return await _context.Admins.Where(s => s.Id == id).ExecuteDeleteAsync();
+            if (admin == null) return false;
+
+            admin.User.Name = updatedAdmin.User.Name;
+            admin.User.Email = updatedAdmin.User.Email;
+            admin.User.Password = updatedAdmin.User.Password;
+            admin.Permissions = updatedAdmin.Permissions;
+
+            return true;
         }
     }
 }

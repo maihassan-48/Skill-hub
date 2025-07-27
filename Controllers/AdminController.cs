@@ -24,7 +24,7 @@ namespace Skill_Hub.Controllers
             _jwtService = jwtService;
         }
 
-        [Authorize(Roles = ADMIN_ROLE)]
+        //[Authorize(Roles = ADMIN_ROLE)]
         [HttpGet]
         public async Task<IActionResult> GetAdmins()
         {
@@ -32,7 +32,7 @@ namespace Skill_Hub.Controllers
             return Ok(admins);
         }
 
-        [Authorize(Roles = ADMIN_ROLE)]
+        //[Authorize(Roles = ADMIN_ROLE)]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAdmin(int id)
         {
@@ -40,7 +40,7 @@ namespace Skill_Hub.Controllers
             return Ok(admin);
         }
 
-        [Authorize(Roles = ADMIN_ROLE)]
+        //[Authorize(Roles = ADMIN_ROLE)]
         [HttpPost]
         public async Task<IActionResult> CreateAdmin([FromBody] AdminRequestDTO admin)
         {
@@ -49,7 +49,7 @@ namespace Skill_Hub.Controllers
             return Ok(signInResponse);
         }
 
-        [Authorize(Roles = ADMIN_ROLE)]
+        //[Authorize(Roles = ADMIN_ROLE)]
         [HttpPut]
         public async Task<IActionResult> UpdateAdmin(int id, AdminRequestDTO admin)
         {
@@ -58,22 +58,6 @@ namespace Skill_Hub.Controllers
                 await _adminService.UpdateAdminAsync(id, admin);
                 return Ok("Admin Updated Successfullly");
             }   
-
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
-        [Authorize(Roles = ADMIN_ROLE)]
-        [HttpDelete]
-        public async Task<IActionResult> DeleteAdmin(int id)
-        {
-            try
-            {
-                await _adminService.DeleteAdminAsync(id);
-                return Ok("Admin Deleted Successfully");
-            }
 
             catch (Exception e)
             {

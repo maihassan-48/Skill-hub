@@ -56,21 +56,7 @@ namespace Skill_Hub.Services.Interfaces
 
             var admin = _mapper.Map<Admin>(adminDTO);
 
-            int rowsAffected = await _unitOfWork.AdminRepository.UpdateAdminAsync(id, admin);
-
-            if (rowsAffected == 0)
-            {
-                throw new Exception("Admin not found");
-            }
-
-            _unitOfWork.Save();
-        }
-
-        public async Task DeleteAdminAsync(int id)
-        {
-            int rowsAffected =  await _unitOfWork.AdminRepository.DeleteAdminAsync(id);
-
-            if (rowsAffected == 0)
+            if(!await _unitOfWork.AdminRepository.UpdateAdminAsync(id, admin))
             {
                 throw new Exception("Admin not found");
             }
