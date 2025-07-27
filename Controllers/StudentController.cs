@@ -50,7 +50,7 @@ namespace Skill_Hub.Controllers
         }
 
         [Authorize(Roles = ADMIN_ROLE)]
-        [HttpPut]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateStudent(int id, StudentRequestDTO student)
         {
             try
