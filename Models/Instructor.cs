@@ -7,6 +7,8 @@ namespace Skill_Hub.Models
         public int Id { get; set; }
         public User User { get; set; }
         public required string Department { get; set; }
-        
+
+        public virtual List<Course> Courses { get; } = [];
+
     }
 }

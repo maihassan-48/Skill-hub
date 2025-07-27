@@ -6,7 +6,7 @@ namespace Skill_Hub.Repositories.Interfaces
     {
         Task<Module?> GetModuleByIdAsync(int moduleId);
         Task<IEnumerable<Module>> GetAllModulesByCourseIdAsync(int courseId);
-        Task<Module> AddModuleAsync(Module module);
+        Task AddModuleAsync(Module module);
         Task UpdateModuleAsync(Module module);
         Task DeleteModuleAsync(int moduleId);
 

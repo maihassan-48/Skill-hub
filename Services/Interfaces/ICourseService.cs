@@ -9,8 +9,8 @@ namespace Skill_Hub.Services.Interfaces
         Task<IEnumerable<Course>> GetAllCoursesAsync();
         Task<IEnumerable<Course>> GetCoursesByCategoryAsync(int categoryId);
         Task<IEnumerable<Course>> GetCoursesByInstructorAsync(int instructorId);
-        Task<Course> AddCourseAsync(CreateCourseDto createCourseDto);
-        Task UpdateCourseAsync(Course course);
-        Task DeleteCourseAsync(int courseId);
+        Task<Course> AddCourseAsync(CreateCourseDto createCourseDto, string token);
+        Task UpdateCourseAsync(Course course, string token);
+        Task DeleteCourseAsync(int courseId, string token);
     }
 }
