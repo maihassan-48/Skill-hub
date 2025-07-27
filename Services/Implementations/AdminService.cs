@@ -18,14 +18,14 @@ namespace Skill_Hub.Services.Interfaces
             _jwtService = jwtService;
         }
 
-        public Task<SignInResponseDTO> CreateAdminAsync(AdminRequestDTO adminDTO)
+        public async Task<SignInResponseDTO> CreateAdminAsync(AdminRequestDTO adminDTO)
         {
             var admin = _mapper.Map<Admin>(adminDTO);
-            _unitOfWork.AdminRepository.AddAdminAsync(admin);
+            await _unitOfWork.AdminRepository.AddAdminAsync(admin);
             _unitOfWork.Save();
 
             var token = _jwtService.GenerateToken(admin.User, admin.User.Role);
-            return Task.FromResult(new SignInResponseDTO
+            return await Task.FromResult(new SignInResponseDTO
             {
                 Token = token,
                 Expiration = DateTime.UtcNow.AddHours(1),
@@ -47,16 +47,30 @@ namespace Skill_Hub.Services.Interfaces
             return _mapper.Map<AdminResponseDTO>(admins);
         }
 
-        public async Task<int> UpdateAdminAsync(int id, AdminRequestDTO adminDTO)
+        public async Task UpdateAdminAsync(int id, AdminRequestDTO adminDTO)
         {
             var admin = _mapper.Map<Admin>(adminDTO);
 
-            return await _unitOfWork.AdminRepository.UpdateAdminAsync(id, admin);
+            int rowsAffected = await _unitOfWork.AdminRepository.UpdateAdminAsync(id, admin);
+
+            if (rowsAffected == 0)
+            {
+                throw new Exception("Admin not found");
+            }
+
+            _unitOfWork.Save();
         }
 
-        public async Task<int> DeleteAdminAsync(int id)
+        public async Task DeleteAdminAsync(int id)
         {
-            return await _unitOfWork.AdminRepository.DeleteAdminAsync(id);
+            int rowsAffected =  await _unitOfWork.AdminRepository.DeleteAdminAsync(id);
+
+            if (rowsAffected == 0)
+            {
+                throw new Exception("Admin not found");
+            }
+
+            _unitOfWork.Save();
         }
     }
 }
