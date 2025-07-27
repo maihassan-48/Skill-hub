@@ -48,5 +48,38 @@ namespace Skill_Hub.Controllers
             var signInResponse = await _studentService.CreateStudentAsync(student);
             return Ok(signInResponse);
         }
+
+        [Authorize(Roles = ADMIN_ROLE)]
+        [HttpPut]
+        public async Task<IActionResult> UpdateStudent(int id, StudentRequestDTO student)
+        {
+            try
+            {
+                await _studentService.UpdateStudentAsync(id, student);
+                return Ok("Student Updated Successfullly");
+            }   
+
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [Authorize(Roles = ADMIN_ROLE)]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteStudent(int id)
+        {
+            try
+            {
+                await _studentService.DeleteStudentAsync(id);
+                return Ok("Student Deleted Successfully");
+            }
+
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
     }
 }
