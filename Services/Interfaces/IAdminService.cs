@@ -12,8 +12,8 @@ namespace Skill_Hub.Services.Interfaces
 
         public Task<AdminResponseDTO?> GetAdminByIdAsync(int id);
 
-        public Task<int> UpdateAdminAsync(int id, AdminRequestDTO adminDTO);
+        public Task<bool> UpdateAdminAsync(int id, AdminRequestDTO adminDTO);
 
-        public Task<int> DeleteAdminAsync(int id);
+        public Task<bool> DeleteAdminAsync(int id);
     }
 }
