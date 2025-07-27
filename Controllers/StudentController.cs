@@ -24,7 +24,7 @@ namespace Skill_Hub.Controllers
             _jwtService = jwtService;
         }
 
-        [Authorize(Roles = ADMIN_ROLE)]
+        //[Authorize(Roles = ADMIN_ROLE)]
         [HttpGet]
         public async Task<IActionResult> GetStudents()
         {
@@ -32,7 +32,7 @@ namespace Skill_Hub.Controllers
             return Ok(students);
         }
 
-        [Authorize(Roles = ADMIN_ROLE)]
+        //[Authorize(Roles = ADMIN_ROLE)]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetStudent(int id)
         {
@@ -40,7 +40,7 @@ namespace Skill_Hub.Controllers
             return Ok(student);
         }
 
-        [Authorize(Roles = ADMIN_ROLE)]
+        //[Authorize(Roles = ADMIN_ROLE)]
         [HttpPost]
         public async Task<IActionResult> CreateStudent([FromBody] StudentRequestDTO student)
         {
@@ -49,7 +49,7 @@ namespace Skill_Hub.Controllers
             return Ok(signInResponse);
         }
 
-        [Authorize(Roles = ADMIN_ROLE)]
+        //[Authorize(Roles = ADMIN_ROLE)]
         [HttpPut]
         public async Task<IActionResult> UpdateStudent(int id, StudentRequestDTO student)
         {
@@ -64,22 +64,5 @@ namespace Skill_Hub.Controllers
                 return BadRequest(e.Message);
             }
         }
-
-        [Authorize(Roles = ADMIN_ROLE)]
-        [HttpDelete]
-        public async Task<IActionResult> DeleteStudent(int id)
-        {
-            try
-            {
-                await _studentService.DeleteStudentAsync(id);
-                return Ok("Student Deleted Successfully");
-            }
-
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
     }
 }

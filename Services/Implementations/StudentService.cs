@@ -57,27 +57,13 @@ namespace Skill_Hub.Services.Interfaces
 
             var student = _mapper.Map<Student>(studentDTO);
 
-            int rowsAffected = await _unitOfWork.StudentRepository.UpdateStudentAsync(id, student);
-
-            if(rowsAffected == 0)
+            if(!await _unitOfWork.StudentRepository.UpdateStudentAsync(id, student))
             {
                 throw new Exception("Student not found");
             }
 
             _unitOfWork.Save();
 
-        }
-
-        public async Task DeleteStudentAsync(int id)
-        {
-            int rowsAffected = await _unitOfWork.StudentRepository.DeleteStudentAsync(id);
-
-            if (rowsAffected == 0)
-            {
-                throw new Exception("Student not found");
-            }
-
-            _unitOfWork.Save();
         }
     }
 }

@@ -9,6 +9,5 @@ namespace Skill_Hub.Services.Interfaces
         Task<IEnumerable<StudentResponseDTO>> GetAllStudentsAsync();
         Task<SignInResponseDTO> CreateStudentAsync(StudentRequestDTO student);
         Task UpdateStudentAsync(int id, StudentRequestDTO student);
-        Task DeleteStudentAsync(int id);
     }
 }
