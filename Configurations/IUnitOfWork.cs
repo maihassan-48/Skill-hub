@@ -7,7 +7,7 @@ namespace Skill_Hub.Configurations
         public IInstructorRepository instructorRepository { get; }
         public IUserRepository userRepository { get; }
         public IStudentRepository StudentRepository{get; }
-
+        public IAdminRepository AdminRepository { get; }
         public void Save();
     }
 }
