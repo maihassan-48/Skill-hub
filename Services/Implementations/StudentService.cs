@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Skill_Hub.Configurations;
 using Skill_Hub.Dtos;
+using Skill_Hub.Enums;
 using Skill_Hub.Models;
 using System.Security.AccessControl;
 
@@ -21,6 +22,7 @@ namespace Skill_Hub.Services.Interfaces
 
         public async Task<SignInResponseDTO> CreateStudentAsync(StudentRequestDTO studentDTO)
         {
+            studentDTO.Role = Role.Student;
             var student = _mapper.Map<Student>(studentDTO);
             await _unitOfWork.StudentRepository.AddStudentAsync(student);
             _unitOfWork.Save();
