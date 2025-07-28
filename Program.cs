@@ -74,6 +74,8 @@ builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
 // Register services
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IModuleService, ModuleService>();
+
 
 builder.Services.AddScoped<JwtService>();
 

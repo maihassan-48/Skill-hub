@@ -17,32 +17,62 @@ namespace Skill_Hub.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<Category?> GetCategoryByIdAsync(int categoryId)
-            => await _unitOfWork.CategoryRepository.GetCategoryByIdAsync(categoryId);
-
-        public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
-            => await _unitOfWork.CategoryRepository.GetAllCategoriesAsync();
-
-        public async Task<Category> AddCategoryAsync(CreateCategoryDto categoryDto)
+        public async Task<CategoryResponseDto?> GetCategoryByIdAsync(int categoryId)
         {
+            if (categoryId <= 0)
+                throw new ArgumentException("Invalid category ID.");
+
+            var category = await _unitOfWork.CategoryRepository.GetCategoryByIdAsync(categoryId);
+            return category == null ? null : _mapper.Map<CategoryResponseDto>(category);
+        }
+
+        public async Task<IEnumerable<CategoryResponseDto>> GetAllCategoriesAsync()
+        {
+            var categories = await _unitOfWork.CategoryRepository.GetAllCategoriesAsync();
+            return _mapper.Map<IEnumerable<CategoryResponseDto>>(categories);
+        }
+
+        public async Task<CategoryResponseDto> AddCategoryAsync(CreateCategoryDto categoryDto)
+        {
+            if (string.IsNullOrWhiteSpace(categoryDto.Name))
+                throw new ArgumentException("Category name is required.");
+
             var category = _mapper.Map<Category>(categoryDto);
             await _unitOfWork.CategoryRepository.AddCategoryAsync(category);
             _unitOfWork.Save();
 
-            return category;
+            return _mapper.Map<CategoryResponseDto>(category);
         }
 
-        public async Task UpdateCategoryAsync(Category category)
+        public async Task UpdateCategoryAsync(int id, CreateCategoryDto categoryDto)
         {
-            await Task.Run(() => _unitOfWork.CategoryRepository.UpdateCategoryAsync(category));
+            if (id <= 0)
+                throw new ArgumentException("Invalid category ID.");
+            if (string.IsNullOrWhiteSpace(categoryDto.Name))
+                throw new ArgumentException("Category name is required.");
+
+            var existing = await _unitOfWork.CategoryRepository.GetCategoryByIdAsync(id);
+            if (existing == null)
+                throw new InvalidOperationException("Category not found.");
+
+            _mapper.Map(categoryDto, existing); 
+
+            await _unitOfWork.CategoryRepository.UpdateCategoryAsync(existing);
             _unitOfWork.Save();
         }
 
+
         public async Task DeleteCategoryAsync(int categoryId)
         {
+            if (categoryId <= 0)
+                throw new ArgumentException("Invalid category ID.");
+
+            var existing = await _unitOfWork.CategoryRepository.GetCategoryByIdAsync(categoryId);
+            if (existing == null)
+                throw new InvalidOperationException("Category not found.");
+
             await Task.Run(() => _unitOfWork.CategoryRepository.DeleteCategoryAsync(categoryId));
             _unitOfWork.Save();
         }
     }
-
 }

@@ -10,54 +10,74 @@ namespace Skill_Hub.Services.Implementations
     public class CourseService : ICourseService
     {
         private readonly UnitOfWork _unitOfWork;
-        private readonly IMapper _map;
+        private readonly IMapper _mapper;
         private readonly JwtService _jwtService;
 
-        public CourseService(UnitOfWork unitOfWork, IMapper map,JwtService jwtService)
+        public CourseService(UnitOfWork unitOfWork, IMapper mapper,JwtService jwtService)
         {
             _unitOfWork = unitOfWork;
-            _map = map;
+            _mapper = mapper;
             _jwtService = jwtService;
 
         }
 
-        public async Task<Course?> GetCourseByIdAsync(int courseId)
-            => await _unitOfWork.CourseRepository.GetCourseByIdAsync(courseId);
-
-        public async Task<IEnumerable<Course>> GetAllCoursesAsync()
-            => await _unitOfWork.CourseRepository.GetAllCoursesAsync();
-
-        public async Task<IEnumerable<Course>> GetCoursesByCategoryAsync(int categoryId)
-            => await _unitOfWork.CourseRepository.GetCoursesByCategoryAsync(categoryId);
-
-        public async Task<IEnumerable<Course>> GetCoursesByInstructorAsync(int instructorId)
-            => await _unitOfWork.CourseRepository.GetCoursesByInstructorAsync(instructorId);
-
-        public async Task<Course> AddCourseAsync(CreateCourseDto createCourseDto, string token)
+        public async Task<CourseResponseDto?> GetCourseByIdAsync(int courseId)
         {
-            var id = _jwtService.GetUserIdFromToken(token);
-            var course =  _map.Map<Course>(createCourseDto);
-            course.InstructorId = id;
+            var course = await _unitOfWork.CourseRepository.GetCourseByIdAsync(courseId);
+            return course == null ? null : _mapper.Map<CourseResponseDto>(course);
+        }
+
+        public async Task<IEnumerable<CourseResponseDto>> GetAllCoursesAsync()
+        {
+            var courses = await _unitOfWork.CourseRepository.GetAllCoursesAsync();
+            return _mapper.Map<IEnumerable<CourseResponseDto>>(courses);
+        }
+
+        public async Task<IEnumerable<CourseResponseDto>> GetCoursesByCategoryAsync(int categoryId)
+        {
+            var courses = await _unitOfWork.CourseRepository.GetCoursesByCategoryAsync(categoryId);
+            return _mapper.Map<IEnumerable<CourseResponseDto>>(courses);
+        }
+
+        public async Task<IEnumerable<CourseResponseDto>> GetCoursesByInstructorAsync(int instructorId)
+        {
+            var courses = await _unitOfWork.CourseRepository.GetCoursesByInstructorAsync(instructorId);
+            return _mapper.Map<IEnumerable<CourseResponseDto>>(courses);
+        }
+
+        public async Task<CourseResponseDto> AddCourseAsync(string token, CreateCourseDto createCourseDto)
+        {
+
+            var instructorId = _jwtService.GetUserIdFromToken(token);
+            var course =  _mapper.Map<Course>(createCourseDto);
+            course.InstructorId = instructorId;
             await _unitOfWork.CourseRepository.AddCourseAsync(course);
             _unitOfWork.Save();
-            return course;
+            CourseResponseDto courseResponse = _mapper.Map<CourseResponseDto>(course);
+            return courseResponse;
         }
 
-        public async Task UpdateCourseAsync(Course updatedCourse, string token)
+        public async Task UpdateCourseAsync(int id, CreateCourseDto updatedCourseDto, string token)
         {
+            if (id <= 0)
+                throw new ArgumentException("Invalid course ID.");
             var instructorId = _jwtService.GetUserIdFromToken(token);
 
-            var existingCourse = await _unitOfWork.CourseRepository.GetCourseByIdAsync(updatedCourse.Id);
-            if (existingCourse == null || existingCourse.InstructorId != instructorId)
-            {
+            var existingCourse = await _unitOfWork.CourseRepository.GetCourseByIdAsync(id);
+            if (existingCourse == null)
+                throw new InvalidOperationException("Course not found.");
+
+            if (existingCourse.InstructorId != instructorId)
                 throw new UnauthorizedAccessException("You are not authorized to update this course.");
-            }
 
-            updatedCourse.InstructorId = instructorId;
+            _mapper.Map(updatedCourseDto, existingCourse);
+            existingCourse.InstructorId = instructorId;
 
-            await _unitOfWork.CourseRepository.UpdateCourseAsync(updatedCourse);
+
+            await _unitOfWork.CourseRepository.UpdateCourseAsync(existingCourse);
             _unitOfWork.Save();
         }
+
 
 
         public async Task DeleteCourseAsync(int courseId, string token)

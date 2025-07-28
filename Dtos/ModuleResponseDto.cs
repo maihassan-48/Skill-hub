@@ -1,19 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Skill_Hub.Models
+namespace Skill_Hub.Dtos
 {
-    public class Module
+    public class ModuleResponseDto
     {
         public int Id { get; set; }
 
-        public  string Title { get; set; }
+        public required string Title { get; set; }
 
+        
         public required string Content { get; set; }
-        public int Order { get; set; } = 0; // reresents the index of the module in the course
+        public int Order { get; set; } = 0; 
         public int DurationInMinutes { get; set; } = 0;
 
 
         public int CourseId { get; set; }
-        public required virtual Course Course { get; set; }
     }
+
 }

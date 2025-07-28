@@ -6,6 +6,9 @@ using Skill_Hub.Services.Interfaces;
 
 namespace Skill_Hub.Controllers
 {
+
+    [ApiController]
+    [Route("api/[controller]")]
     public class ModuleController: ControllerBase
     {
         private readonly IModuleService _moduleService;
@@ -29,8 +32,6 @@ namespace Skill_Hub.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var module = await _moduleService.GetModuleByIdAsync(id);
-            if (module == null)
-                return NotFound();
             return Ok(module);
         }
         [HttpPost]
@@ -39,26 +40,24 @@ namespace Skill_Hub.Controllers
         {
             string token = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
             var newModule = await _moduleService.AddModuleAsync(moduleDto, token);
-            return CreatedAtAction(nameof(GetById), new { id = newModule.Id }, newModule);
+            return Ok(newModule);
         }
         [HttpPut("{id}")]
-        //[Authorize(Roles = INSTRUCTOR_ROLE)]
-        public async Task<IActionResult> Update(int id, [FromBody] Module module)
+        [Authorize(Roles = INSTRUCTOR_ROLE)]
+        public async Task<IActionResult> Update(int id, [FromBody] CreateModuleDto moduleDto)
         {
             string token = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
-            await _moduleService.UpdateModuleAsync(module, token);
-            return NoContent();
+            await _moduleService.UpdateModuleAsync(id, moduleDto, token);
+            return Ok();
         }
         [HttpDelete("{id}")]
-        //[Authorize(Roles = INSTRUCTOR_ROLE)]
+        [Authorize(Roles = INSTRUCTOR_ROLE)]
         public async Task<IActionResult> Delete(int id)
         {
             string token = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
             await _moduleService.DeleteModuleAsync(id, token);
-            return NoContent();
+            return Ok();
         }
     }
 }
