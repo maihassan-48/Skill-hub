@@ -70,6 +70,8 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
+builder.Services.AddScoped<ISkillRepository, SkillRepository>();
+builder.Services.AddScoped<ISkillService, SkillService>();
 
 // Register services
 builder.Services.AddScoped<ICourseService, CourseService>();
