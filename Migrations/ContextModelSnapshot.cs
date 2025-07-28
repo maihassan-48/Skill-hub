@@ -277,13 +277,13 @@ namespace Skill_Hub.Migrations
             modelBuilder.Entity("Skill_Hub.Models.Course", b =>
                 {
                     b.HasOne("Skill_Hub.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("Courses")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Skill_Hub.Models.Instructor", "Instructor")
-                        .WithMany()
+                        .WithMany("Courses")
                         .HasForeignKey("InstructorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -295,17 +295,21 @@ namespace Skill_Hub.Migrations
 
             modelBuilder.Entity("Skill_Hub.Models.Enrollment", b =>
                 {
-                    b.HasOne("Skill_Hub.Models.Course", null)
-                        .WithMany()
+                    b.HasOne("Skill_Hub.Models.Course", "Course")
+                        .WithMany("Enrollments")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Skill_Hub.Models.Student", null)
-                        .WithMany()
+                    b.HasOne("Skill_Hub.Models.Student", "Student")
+                        .WithMany("Enrollments")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Skill_Hub.Models.Instructor", b =>
@@ -322,7 +326,7 @@ namespace Skill_Hub.Migrations
             modelBuilder.Entity("Skill_Hub.Models.Module", b =>
                 {
                     b.HasOne("Skill_Hub.Models.Course", "Course")
-                        .WithMany()
+                        .WithMany("Modules")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -358,6 +362,28 @@ namespace Skill_Hub.Migrations
                     b.Navigation("Skill");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("Skill_Hub.Models.Category", b =>
+                {
+                    b.Navigation("Courses");
+                });
+
+            modelBuilder.Entity("Skill_Hub.Models.Course", b =>
+                {
+                    b.Navigation("Enrollments");
+
+                    b.Navigation("Modules");
+                });
+
+            modelBuilder.Entity("Skill_Hub.Models.Instructor", b =>
+                {
+                    b.Navigation("Courses");
+                });
+
+            modelBuilder.Entity("Skill_Hub.Models.Student", b =>
+                {
+                    b.Navigation("Enrollments");
                 });
 
             modelBuilder.Entity("Skill_Hub.Models.User", b =>

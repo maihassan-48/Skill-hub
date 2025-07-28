@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Skill_Hub.Migrations
 {
     /// <inheritdoc />
-    public partial class initialCreate : Migration
+    public partial class Initial_DB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

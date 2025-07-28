@@ -20,12 +20,17 @@ namespace Skill_Hub.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Course>()
-                        .HasMany(s => s.Students)
-                        .WithMany(c => c.Courses)
-                        .UsingEntity<Enrollment>(
-                            r => r.HasOne<Student>().WithMany().HasForeignKey(e => e.StudentId).OnDelete(DeleteBehavior.Restrict),
-                            l => l.HasOne<Course>().WithMany().HasForeignKey(e => e.CourseId).OnDelete(DeleteBehavior.Restrict));
+            modelBuilder.Entity<Enrollment>()
+                .HasOne(e => e.Student)
+                .WithMany(s => s.Enrollments)
+                .HasForeignKey(e => e.StudentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Enrollment>()
+                .HasOne(e => e.Course)
+                .WithMany(c => c.Enrollments)
+                .HasForeignKey(e => e.CourseId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Student>()
                         .HasMany(c => c.Skills)
