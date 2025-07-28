@@ -7,6 +7,6 @@ namespace Skill_Hub.Repositories.Interfaces
         Task Enroll(Enrollment enrollment);
         Task Unenroll(int id);
         Task<IEnumerable<Enrollment>> GetEnrollments(int userId);
-        Task<Enrollment> GetEnrollmentById(int id);
+        Task<Enrollment?> GetEnrollmentById(int id);
     }
 }
