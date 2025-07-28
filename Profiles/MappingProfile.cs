@@ -33,6 +33,10 @@ namespace Skill_Hub.Profiles
                 .ForMember(dest => dest.DurationInMinutes, opt => opt.MapFrom(src => src.DurationInMinutes))
                 .ForMember(dest => dest.CourseId, opt => opt.MapFrom(src => src.CourseId));
 
+            CreateMap<SkillRequestDTO, Skill>().ReverseMap();
+            CreateMap<SkillResponseDTO, Skill>().ReverseMap();
+
+            CreateMap<UserSkillDTO, UserSkill>().ReverseMap();
         }
     }
 }
