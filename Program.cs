@@ -10,6 +10,7 @@ using Skill_Hub.Repositories.Interfaces;
 using Skill_Hub.Services.Implementations;
 using Skill_Hub.Services.Interfaces;
 using System.Text;
+using UserSkill_Hub.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,6 +73,9 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
 builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddScoped<ISkillService, SkillService>();
+
+builder.Services.AddScoped<IUserSkillRepository, UserSkillRepository>();
+builder.Services.AddScoped<IUserSkillService, UserSkillService>();
 
 // Register services
 builder.Services.AddScoped<ICourseService, CourseService>();

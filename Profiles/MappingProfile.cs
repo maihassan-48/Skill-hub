@@ -35,6 +35,8 @@ namespace Skill_Hub.Profiles
 
             CreateMap<SkillRequestDTO, Skill>().ReverseMap();
             CreateMap<SkillResponseDTO, Skill>().ReverseMap();
+
+            CreateMap<UserSkillDTO, UserSkill>().ReverseMap();
         }
     }
 }

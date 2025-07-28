@@ -12,7 +12,7 @@ namespace Skill_Hub.Services.Implementations
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public SkillService(IUnitOfWork unitOfWork, IMapper mapper, JwtService jwtService)
+        public SkillService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

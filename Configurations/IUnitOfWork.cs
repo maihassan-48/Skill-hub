@@ -13,6 +13,7 @@ namespace Skill_Hub.Configurations
         public IModuleRepository ModuleRepository { get; }
         public ISkillRepository SkillRepository { get; }
         public IAdminRepository AdminRepository { get; }
+        public IUserSkillRepository UserSkillRepository { get; }
         public void Save();
     }
 }

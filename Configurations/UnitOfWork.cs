@@ -16,6 +16,8 @@ namespace Skill_Hub.Configurations
         private IModuleRepository _moduleRepository;
         private IAdminRepository _adminRepository;
         private ISkillRepository _skillRepository;
+        private IUserSkillRepository _userSkillRepository;
+
 
         public UnitOfWork(Context context)
         {
@@ -91,6 +93,13 @@ namespace Skill_Hub.Configurations
             get
             {
                 return _skillRepository = _skillRepository ?? new SkillRepository(_context);
+            }
+        }
+        public IUserSkillRepository UserSkillRepository
+        {
+            get
+            {
+                return _userSkillRepository = _userSkillRepository ?? new UserSkillRepository(_context);
             }
         }
 
