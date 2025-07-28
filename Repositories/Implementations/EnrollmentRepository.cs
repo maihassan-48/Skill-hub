@@ -14,18 +14,30 @@ namespace Skill_Hub.Repositories.Implementations
         }
         public async Task Enroll(Enrollment enrollment)
         {
-            _context.Enrollments.Add(enrollment);
-            await _context.SaveChangesAsync();
+            await _context.Enrollments.AddAsync(enrollment);
         }
 
-        public async Task<Enrollment> GetEnrollmentById(int id)
+        public async Task<Enrollment?> GetEnrollmentById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Enrollments
+                .Include(c => c.Course)
+                .ThenInclude(x => x.Category)
+                .Include(c => c.Course)
+                .ThenInclude(i => i.Instructor)
+                .ThenInclude(u => u.User)
+                .FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public async Task<IEnumerable<Enrollment>> GetEnrollments(int userId)
         {
-            throw new NotImplementedException();
+            return await _context.Enrollments
+                .Include(c => c.Course)
+                .ThenInclude(x => x.Category)
+                .Include(c => c.Course)
+                .ThenInclude(i => i.Instructor)
+                .ThenInclude(u => u.User)
+                .Where(e => e.Student.StudentId == userId)
+                .ToListAsync();
         }
 
         public async Task Unenroll(int id)

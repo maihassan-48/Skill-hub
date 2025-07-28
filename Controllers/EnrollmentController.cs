@@ -26,7 +26,7 @@ namespace Skill_Hub.Controllers
         {
             string token = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
             await _enrollmentService.Enroll(enrollment, token);
-            return Ok(enrollment);
+            return Ok(new {message = "Enrollment Successful"});
         }
 
         [Authorize(Roles = STUDENT_ROLE)]

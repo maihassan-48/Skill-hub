@@ -37,11 +37,13 @@ namespace Skill_Hub.Services.Implementations
             }
             enrollment.Course = course;
             await _unitOfWork.enrollmentRepository.Enroll(enrollment);
+            _unitOfWork.Save();
         }
 
         public async Task Unenroll(int id)
         {
             await _unitOfWork.enrollmentRepository.Unenroll(id);
+            _unitOfWork.Save();
         }
 
         public async Task<IEnumerable<EnrollmentResponseDTO>> GetEnrollments(string token)
@@ -54,6 +56,10 @@ namespace Skill_Hub.Services.Implementations
         public async Task<EnrollmentResponseDTO> GetEnrollmentById(int id)
         {
             var enrollment = await _unitOfWork.enrollmentRepository.GetEnrollmentById(id);
+            if (enrollment == null)
+            {
+                throw new InvalidOperationException("Enrollment not found");
+            }
             return _mapper.Map<EnrollmentResponseDTO>(enrollment);
         }
     }

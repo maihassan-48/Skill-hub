@@ -9,7 +9,7 @@ namespace Skill_Hub.Profiles
         public EnrollmentProfile()
         {
             CreateMap<EnrollmentRequestDTO, Enrollment>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.CourseId))
+                .ForMember(dest => dest.CourseId, opt => opt.MapFrom(src => src.CourseId))
                 .ForMember(dest => dest.CompletionDate, opt => opt.MapFrom(src => src.CompletionDate))
                 .ReverseMap();
 
