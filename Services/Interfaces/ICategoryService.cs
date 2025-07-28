@@ -5,10 +5,10 @@ namespace Skill_Hub.Services.Interfaces
 {
     public interface ICategoryService
     {
-        Task<Category?> GetCategoryByIdAsync(int categoryId);
-        Task<IEnumerable<Category>> GetAllCategoriesAsync();
-        Task<Category> AddCategoryAsync(CreateCategoryDto category);
-        Task UpdateCategoryAsync(Category category);
+        Task<CategoryResponseDto?> GetCategoryByIdAsync(int categoryId);
+        Task<IEnumerable<CategoryResponseDto>> GetAllCategoriesAsync();
+        Task<CategoryResponseDto> AddCategoryAsync(CreateCategoryDto category);
+        Task UpdateCategoryAsync(int id, CreateCategoryDto category);
         Task DeleteCategoryAsync(int categoryId);
     }
 }

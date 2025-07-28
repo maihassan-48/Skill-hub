@@ -34,31 +34,23 @@ namespace Skill_Hub.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var course = await _courseService.GetCourseByIdAsync(id);
-            if (course == null)
-                return NotFound();
             return Ok(course);
         }
         [HttpPost]
         [Authorize(Roles = INSTRUCTOR_ROLE)]
         public async Task<IActionResult> Create([FromBody] CreateCourseDto courseDto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             string token = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
-            var newCourse = await _courseService.AddCourseAsync(courseDto, token);
-            return CreatedAtAction(nameof(GetById), new { id = newCourse.Id }, newCourse);
+            CourseResponseDto newCourse = await _courseService.AddCourseAsync(token, courseDto);
+            return Ok(newCourse);
         }
         [HttpPut("{id}")]
         [Authorize(Roles = INSTRUCTOR_ROLE)]
-        public async Task<IActionResult> Update(int id, [FromBody] Course course)
+        public async Task<IActionResult> Update(int id, [FromBody] CreateCourseDto courseDto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
             string token = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
-            course.Id = id;
-            await _courseService.UpdateCourseAsync(course, token);
-            return NoContent();
+            await _courseService.UpdateCourseAsync(id, courseDto, token);
+            return Ok();
         }
         [HttpDelete("{id}")]
         [Authorize(Roles = INSTRUCTOR_ROLE)]
@@ -66,7 +58,7 @@ namespace Skill_Hub.Controllers
         {
             string token = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
             await _courseService.DeleteCourseAsync(id, token);
-            return NoContent();
+            return Ok();
         }
     }
 }

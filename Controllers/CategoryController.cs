@@ -34,8 +34,6 @@ namespace Skill_Hub.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var category = await _categoryService.GetCategoryByIdAsync(id);
-            if (category == null)
-                return NotFound();
             return Ok(category);
         }
 
@@ -43,21 +41,16 @@ namespace Skill_Hub.Controllers
         [Authorize(Roles = ADMIN_ROLE)]
         public async Task<IActionResult> Create([FromBody] CreateCategoryDto categoryDto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             var newCategory = await _categoryService.AddCategoryAsync(categoryDto);
-
-            return CreatedAtAction(nameof(GetById), new { id = newCategory.Id }, newCategory);
+            return Ok(newCategory);
         }
 
         [HttpPut("{id}")]
         [Authorize(Roles = ADMIN_ROLE)]
-        public async Task<IActionResult> Update(int id, [FromBody] Category category)
+        public async Task<IActionResult> Update(int id, [FromBody] CreateCategoryDto categoryDto)
         {
-
-            await _categoryService.UpdateCategoryAsync(category);
-            return NoContent();
+            await _categoryService.UpdateCategoryAsync(id, categoryDto);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -65,7 +58,7 @@ namespace Skill_Hub.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _categoryService.DeleteCategoryAsync(id);
-            return NoContent();
+            return Ok();
         }
 
 
