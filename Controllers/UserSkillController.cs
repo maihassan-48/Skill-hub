@@ -21,7 +21,7 @@ namespace Skill_Hub.Controllers
             _userSkillService = userSkillService;
         }
 
-        //[Authorize(Roles = STUDENT_ROLE)]
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] UserSkillDTO userSkill)
         {
@@ -36,7 +36,7 @@ namespace Skill_Hub.Controllers
             }
         }
 
-        //[Authorize(Roles = STUDENT_ROLE)]
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Unregister(int id)
         {
@@ -50,7 +50,7 @@ namespace Skill_Hub.Controllers
             }
         }
 
-        //[Authorize(Roles = INSTRUCTOR_ADMIN_ROLES)]
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetUserSkills()
         {
@@ -58,7 +58,7 @@ namespace Skill_Hub.Controllers
             return Ok(userSkills);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserSkillById(int id)
         {
@@ -67,7 +67,7 @@ namespace Skill_Hub.Controllers
         }
 
 
-        //[Authorize]
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUserSkill(int id, UserSkillDTO userSkillDTO)
         {
@@ -81,8 +81,6 @@ namespace Skill_Hub.Controllers
                 return BadRequest(e.Message);
             }
         }
-
-
 
     }
 }
