@@ -8,7 +8,7 @@ namespace Skill_Hub.Models
         public User User { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Major { get; set; }
-        public virtual List<Course> Courses { get; } = [];
+        public virtual List<Enrollment> Enrollments { get; } = [];
         public virtual List<Skill> Skills { get; } = [];
 
     }

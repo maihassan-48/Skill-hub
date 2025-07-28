@@ -18,8 +18,7 @@ namespace Skill_Hub.Models
         public int InstructorId { get; set; }
         public Instructor Instructor { get; set; } = null!;
 
-
-        public virtual List<Student> Students { get; } = [];
+        public virtual List<Enrollment> Enrollments { get; } = [];
         public virtual List<Module> Modules { get; } = [];
     }
 
