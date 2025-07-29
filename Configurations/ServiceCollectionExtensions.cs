@@ -3,6 +3,7 @@ using Skill_Hub.Repositories.Implementations;
 using Skill_Hub.Repositories.Interfaces;
 using Skill_Hub.Services.Implementations;
 using Skill_Hub.Services.Interfaces;
+using UserSkill_Hub.Services.Interfaces;
 
 namespace Skill_Hub.Configurations
 {
@@ -20,6 +21,9 @@ namespace Skill_Hub.Configurations
             services.AddScoped<IEnrollmentService, EnrollmentService>();
             services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
 
+            services.AddScoped<IAdminRepository, AdminRepository>();
+            services.AddScoped<IAdminService, AdminService>();
+
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<ICourseService, CourseService>();
@@ -27,6 +31,12 @@ namespace Skill_Hub.Configurations
             services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IModuleRepository, ModuleRepository>();
+
+            services.AddScoped<ISkillService, SkillService>();
+            services.AddScoped<ISkillRepository, SkillRepository>();
+
+            services.AddScoped<IUserSkillService, UserSkillService>();
+            services.AddScoped<IUserSkillRepository, UserSkillRepository>();
 
             // Register services
             services.AddScoped<ICourseService, CourseService>();
